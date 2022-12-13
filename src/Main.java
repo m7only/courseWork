@@ -217,8 +217,7 @@ public class Main {
                         if ((percent = getInt()) != -1) {
                             if (employeeBook.raiseSalary(percent, currentDepartment)) {
                                 System.out.printf("Зарплата отдела %d увеличена на %d процентов.\n", currentDepartment, percent);
-                            }
-                            else {
+                            } else {
                                 System.out.println("Ошибка при изменении зарплаты. Попробуйте снова.");
                             }
                         } else {
