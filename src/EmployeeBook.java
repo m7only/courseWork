@@ -1,8 +1,6 @@
-import java.util.Arrays;
-
 public class EmployeeBook {
     private Employee[] employee = new Employee[10];
-    private final int departmentQuantity = 5; // количество отделов согласно условий задачи
+    public static final int departmentQuantity = 5; // количество отделов согласно условий задачи
 
     public boolean addEmployee(String fullName, int department, int salary) { // Добавляем сотрудника. Если добавился - ок, если нет места в массиве - ошибка
         for (int i = 0; i < employee.length; i++) {
@@ -90,14 +88,10 @@ public class EmployeeBook {
 
     public Employee minSalaryEmployee() { // Ищем неудачника с минимальной зарплатой
         Employee minSalaryEmployee = new Employee();
-        for (Employee emp : employee) {
-            if (emp != null) {
-                if (minSalaryEmployee.getFullName() == null) {
-                    minSalaryEmployee = emp; // для присвоения начальной зарплаты, с которой будем сравнивать
-                }
-                if (minSalaryEmployee.getSalary() > emp.getSalary()) {
-                    minSalaryEmployee = emp;
-                }
+        for (int department = 1; department <= departmentQuantity; department++) {
+            Employee minSalaryByDepartment = minSalaryEmployee(department);
+            if (minSalaryEmployee.getFullName() == null || minSalaryEmployee.getSalary() > minSalaryByDepartment.getSalary()) {
+                minSalaryEmployee = minSalaryByDepartment;
             }
         }
         return minSalaryEmployee;
@@ -105,15 +99,6 @@ public class EmployeeBook {
 
     public Employee minSalaryEmployee(int currentDepartment) { // Ищем неудачника в отделе с минимальной зарплатой
         Employee minSalaryEmployee = new Employee();
-/*
-        for (Employee emp : employee) { // ищем хоть кого-нибудь из отдела для присвоения начальной зп
-            if (emp != null && emp.getDepartment() == currentDepartment) {
-                minSalaryEmployee = emp;
-                break;
-            }
-        }
-*/
-
         for (Employee emp : employee) {
             if (emp != null && emp.getDepartment() == currentDepartment) {
                 if (minSalaryEmployee.getFullName() == null) { // для присвоения начальной зарплаты
@@ -129,14 +114,10 @@ public class EmployeeBook {
 
     public Employee maxSalaryEmployee() { // Ищем выскочку с максимальной зарплатой
         Employee maxSalaryEmployee = new Employee();
-        for (Employee emp : employee) {
-            if (emp != null) {
-                if (maxSalaryEmployee.getFullName() == null) { // Для присвоения начальной зарплаты, с которой будем сравнивать
-                    maxSalaryEmployee = emp;
-                }
-                if (maxSalaryEmployee.getSalary() < emp.getSalary()) {
-                    maxSalaryEmployee = emp;
-                }
+        for (int department = 1; department <= departmentQuantity; department++) {
+            Employee maxSalaryByDepartment = maxSalaryEmployee(department);
+            if (maxSalaryEmployee.getFullName() == null || maxSalaryEmployee.getSalary() < maxSalaryByDepartment.getSalary()) {
+                maxSalaryEmployee = maxSalaryByDepartment;
             }
         }
         return maxSalaryEmployee;
@@ -144,15 +125,6 @@ public class EmployeeBook {
 
     public Employee maxSalaryEmployee(int currentDepartment) { // Ищем выскочку в отделе с максимальной зарплатой
         Employee maxSalaryEmployee = new Employee();
-/*
-        for (Employee emp : employee) { // ищем хоть кого-нибудь из отдела для присвоения начальной зп
-            if (emp.getDepartment() == currentDepartment) {
-                maxSalaryEmployee = emp;
-                break;
-            }
-        }
-*/
-
         for (Employee emp : employee) {
             if (emp != null && emp.getDepartment() == currentDepartment) {
                 if (maxSalaryEmployee.getFullName() == null) { // Для присвоения начальной зарплаты, с которой будем сравнивать
@@ -197,9 +169,9 @@ public class EmployeeBook {
 
     public boolean raiseSalary(int percent) { // Индексируем зарплату на введеный процент
         double k = (double) percent / 100 + 1;
-        for (int i = 0; i < employee.length; i++) {
-            if (employee[i] != null) {
-                employee[i].setSalary((int) (employee[i].getSalary() * k));
+        for (Employee value : employee) {
+            if (value != null) {
+                value.setSalary((int) (value.getSalary() * k));
             }
         }
         return true;
@@ -207,9 +179,9 @@ public class EmployeeBook {
 
     public boolean raiseSalary(int percent, int currentDepartment) { // Индексируем зарплату отделу на введеный процент
         double k = (double) percent / 100 + 1;
-        for (int i = 0; i < employee.length; i++) {
-            if (employee[i] != null && employee[i].getDepartment() == currentDepartment) {
-                employee[i].setSalary((int) (employee[i].getSalary() * k));
+        for (Employee value : employee) {
+            if (value != null && value.getDepartment() == currentDepartment) {
+                value.setSalary((int) (value.getSalary() * k));
             }
         }
         return true;
@@ -234,9 +206,9 @@ public class EmployeeBook {
     }
 
     public boolean changeSalary(String fullName, int newSalary) { // Изменить ЗП указанному ФЫО
-        for (int i = 0; i < employee.length; i++) {
-            if (employee[i] != null && employee[i].getFullName().equals(fullName)) {
-                employee[i].setSalary(newSalary);
+        for (Employee value : employee) {
+            if (value != null && value.getFullName().equals(fullName)) {
+                value.setSalary(newSalary);
                 return true;
             }
         }
@@ -244,9 +216,9 @@ public class EmployeeBook {
     }
 
     public boolean changeDepartment(String fullName, int newDepartment) { // Изменить отдел указанному ФЫО
-        for (int i = 0; i < employee.length; i++) {
-            if (employee[i] != null && employee[i].getFullName().equals(fullName)) {
-                employee[i].setDepartment(newDepartment);
+        for (Employee value : employee) {
+            if (value != null && value.getFullName().equals(fullName)) {
+                value.setDepartment(newDepartment);
                 return true;
             }
         }
