@@ -5,10 +5,11 @@ public class Main {
     public static void main(String[] args) {
         EmployeeBook employeeBook = new EmployeeBook();
         // набиваем сотрудников для работы
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i <= 10; i++) {
             //if (!employeeBook.addEmployee("ФАМИЛИЯ_ЫМЯ_ОТЧЕСТВО_" + i, ThreadLocalRandom.current().nextInt(1, 6), ThreadLocalRandom.current().nextInt(50000, 150000)))
-            if (!employeeBook.addEmployee("ФАМИЛИЯ_ЫМЯ_ОТЧЕСТВО_" + i, ThreadLocalRandom.current().nextInt(1, 6), 10000 + i * 1000))
+            if (!employeeBook.addEmployee("ФАМИЛИЯ_ЫМЯ_ОТЧЕСТВО_" + i, ThreadLocalRandom.current().nextInt(1, 6), 10000 + i * 1000)) {
                 System.out.println("Ошибка при добавлении сотрудника.");
+            }
         }
 
         boolean isExit = true;
@@ -57,7 +58,7 @@ public class Main {
                         System.out.printf("Данные сотрудника с максимальной зарплатой: %s\n", employeeBook.maxSalaryEmployee());
                         break;
                     case "5":
-                        System.out.printf("Средняя зарплата: %d\n", employeeBook.averageSalary());
+                        System.out.printf("Средняя зарплата: %.2f\n", employeeBook.averageSalary());
                         break;
                     case "6":
                         System.out.println("Список всех сотрудников: ");
@@ -67,8 +68,9 @@ public class Main {
                         System.out.printf("Введите, на сколько процентов повысить зарплату: ");
                         Scanner scannerPercent = new Scanner(System.in);
                         int percent = scannerPercent.nextInt();
-                        if (employeeBook.raiseSalary(percent))
+                        if (employeeBook.raiseSalary(percent)) {
                             System.out.printf("Зарплата увеличена на %d процентов.\n", percent);
+                        }
                         break;
                     case "8":
                         Scanner depScanner = new Scanner(System.in);
@@ -97,9 +99,11 @@ public class Main {
                         int salary = scannerAdd.nextInt();
                         System.out.printf("Введите отдел: ");
                         int department = scannerAdd.nextInt();
-                        if (employeeBook.addEmployee(fullName, department, salary))
+                        if (employeeBook.addEmployee(fullName, department, salary)) {
                             System.out.printf("Сотрудник %s принят на работу в отдел %d с зарплатой %d.\n", fullName, department, salary);
-                        else System.out.println("Ошибка при приеме на работу. Возможно, штатное расписание заполнено.");
+                        } else {
+                            System.out.println("Ошибка при приеме на работу. Возможно, штатное расписание заполнено.");
+                        }
                         break;
                     case "12":
                         menu = 12;
@@ -112,9 +116,11 @@ public class Main {
                         String salaryChangeFullName = scannerChangeSalary.nextLine();
                         System.out.printf("Новую зарплату: ");
                         int changedSalary = scannerChangeSalary.nextInt();
-                        if (employeeBook.changeSalary(salaryChangeFullName, changedSalary))
+                        if (employeeBook.changeSalary(salaryChangeFullName, changedSalary)) {
                             System.out.printf("Зарплата сотрудника %s изменена на %d", salaryChangeFullName, changedSalary);
-                        else System.out.println("Ошибка при изменении зарплаты");
+                        } else {
+                            System.out.println("Ошибка при изменении зарплаты");
+                        }
                         break;
                     case "14":
                         System.out.println("Список сотрудников организации:");
@@ -124,9 +130,11 @@ public class Main {
                         String depChangeFullName = scannerChangeDepartment.nextLine();
                         System.out.printf("Введите отдел: ");
                         int changedDepartment = scannerChangeDepartment.nextInt();
-                        if (employeeBook.changeDepartment(depChangeFullName, changedDepartment))
+                        if (employeeBook.changeDepartment(depChangeFullName, changedDepartment)) {
                             System.out.printf("Отдел сотрудника %s изменен на %d.\n", depChangeFullName, changedDepartment);
-                        else System.out.println("Ошибка при изменении отдела.\n");
+                        } else {
+                            System.out.println("Ошибка при изменении отдела.\n");
+                        }
                         break;
                     case "15":
                         employeeBook.listAllByDepartment();
@@ -165,14 +173,15 @@ public class Main {
                         System.out.printf("Бюджет зарплат отдела %d за месяц: %d\n", currentDepartment, employeeBook.monthSalary(currentDepartment));
                         break;
                     case "5":
-                        System.out.printf("Средняя зарплата: %d\n", employeeBook.averageSalary(currentDepartment));
+                        System.out.printf("Средняя зарплата: %.2f\n", employeeBook.averageSalary(currentDepartment));
                         break;
                     case "6":
                         System.out.printf("Введите, на сколько процентов повысить зарплату: ");
                         Scanner scannerPercent = new Scanner(System.in);
                         int percent = scannerPercent.nextInt();
-                        if (employeeBook.raiseSalary(percent, currentDepartment))
+                        if (employeeBook.raiseSalary(percent, currentDepartment)) {
                             System.out.printf("Зарплата отдела %d увеличена на %d процентов.\n", currentDepartment, percent);
+                        }
                         break;
                     default:
                         System.out.println("Неверный выбор, попробуйте снова.");
@@ -185,8 +194,11 @@ public class Main {
                 Scanner scannerRemove = new Scanner(System.in);
                 String input = scannerRemove.nextLine();
                 if (!input.equals("exit")) {
-                    if (employeeBook.removeEmployee(input)) System.out.printf("Сотрудник %s уволен.\n\n", input);
-                    else System.out.printf("Ошибка при увольнении сотрудника %s.\n\n", input);
+                    if (employeeBook.removeEmployee(input)) {
+                        System.out.printf("Сотрудник %s уволен.\n\n", input);
+                    } else {
+                        System.out.printf("Ошибка при увольнении сотрудника %s.\n\n", input);
+                    }
                 } else menu = 0;
             } else menu = 0;
         }
