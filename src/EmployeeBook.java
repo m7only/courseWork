@@ -13,7 +13,7 @@ public class EmployeeBook {
     }
 
     public boolean removeEmployee(String input) { // Увольняем сотрудника по ФЫО или id, если удален - ок, если нет - не ок.
-        if (isInteger(input)) { // проверяем, что ввели строку: ФЫО или номер отдела
+        if (isInteger(input)) { // проверяем, что ввели в строку: ФЫО или номер отдела
             for (int i = 0; i < employee.length; i++) {
                 if (employee[i] != null && employee[i].getId() == Integer.parseInt(input)) {
                     employee[i] = null;
