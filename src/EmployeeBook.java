@@ -2,14 +2,11 @@ import java.util.LinkedList;
 
 public class EmployeeBook {
     private Employee[] employee = new Employee[10];
-    public static final int departmentQuantity = 5; // количество отделов согласно условий задачи
+    public static final int DEPARTMENT_QUANTITY = 5; // количество отделов согласно условий задачи
 
     public boolean addEmployee(String fullName, int department, int salary) { // Добавляем сотрудника. Если добавился - ок, если нет места в массиве - ошибка
-        if (department <= 0 && department > EmployeeBook.departmentQuantity) {
-            return false;
-        }
         for (int i = 0; i < employee.length; i++) {
-            if (employee[i] == null && department > 0 && department <= departmentQuantity) { // проверка на пустую ячейку в масиве и правильно введенный отдел
+            if (employee[i] == null && isDepartmentValid(department)) { // проверка на пустую ячейку в масиве и правильно введенный отдел
                 employee[i] = new Employee(fullName, department, salary);
                 return true;
             }
@@ -74,7 +71,7 @@ public class EmployeeBook {
 
     public Employee getMinSalaryEmployee() { // Ищем неудачника с минимальной зарплатой
         Employee minSalaryEmployee = new Employee();
-        for (int department = 1; department <= departmentQuantity; department++) {
+        for (int department = 1; department <= DEPARTMENT_QUANTITY; department++) {
             Employee minSalaryByDepartment = getMinSalaryEmployee(department);
             if (minSalaryEmployee.getFullName() == null || minSalaryEmployee.getSalary() > minSalaryByDepartment.getSalary()) {
                 minSalaryEmployee = minSalaryByDepartment;
@@ -100,7 +97,7 @@ public class EmployeeBook {
 
     public Employee getMaxSalaryEmployee() { // Ищем выскочку с максимальной зарплатой
         Employee maxSalaryEmployee = new Employee();
-        for (int department = 1; department <= departmentQuantity; department++) {
+        for (int department = 1; department <= DEPARTMENT_QUANTITY; department++) {
             Employee maxSalaryByDepartment = getMaxSalaryEmployee(department);
             if (maxSalaryEmployee.getFullName() == null || maxSalaryEmployee.getSalary() < maxSalaryByDepartment.getSalary()) {
                 maxSalaryEmployee = maxSalaryByDepartment;
@@ -206,7 +203,7 @@ public class EmployeeBook {
     }
 
     public boolean changeDepartment(String fullName, int newDepartment) { // Изменить отдел указанному ФЫО
-        if (newDepartment <= 0 && newDepartment > EmployeeBook.departmentQuantity) { // Если введеный отдел вне допустимого диапазона - вываливаемся
+        if (!isDepartmentValid(newDepartment)) { // Если введеный отдел вне допустимого диапазона - вываливаемся
             return false;
         }
         for (Employee value : employee) {
@@ -214,6 +211,13 @@ public class EmployeeBook {
                 value.setDepartment(newDepartment);
                 return true;
             }
+        }
+        return false;
+    }
+
+    public static boolean isDepartmentValid(int d) {
+        if (d > 0 && d <= DEPARTMENT_QUANTITY) {
+            return true;
         }
         return false;
     }

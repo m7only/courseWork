@@ -82,7 +82,7 @@ public class Print {
     }
 
     public void printAllEmployeeByDepartment(EmployeeBook employeeBook) { // Вывод сотрудников с распределением по отделам
-        for (int currentDepartment = 1; currentDepartment <= EmployeeBook.departmentQuantity; currentDepartment++) {
+        for (int currentDepartment = 1; currentDepartment <= EmployeeBook.DEPARTMENT_QUANTITY; currentDepartment++) {
             System.out.println("Состав сотрудников отдела " + currentDepartment + ":");
             printAllEmployee(employeeBook, currentDepartment);
         }

@@ -50,7 +50,7 @@ public class Menu {
                     case "7": // Индексация зарплаты на указываемый процент
                         print.printMessage("Введите, на сколько процентов повысить зарплату: ");
                         int percent;
-                        if ((percent = getInt()) != -1) {
+                        if ((percent = getInt()) > 0) {
                             if (employeeBook.raiseSalary(percent)) {
                                 print.printMessage(String.format("Зарплата увеличена на %d процентов.%n", percent));
                             } else {
@@ -62,8 +62,8 @@ public class Menu {
                         break;
                     case "8": // Выбор отдела для перехода в меню отдела
                         print.printMessage("Введите номер отдела: ");
-                        if ((currentDepartment = getInt()) != -1) {
-                            if (currentDepartment > 0 && currentDepartment <= EmployeeBook.departmentQuantity) {
+                        if ((currentDepartment = getInt()) > 0) {
+                            if (EmployeeBook.isDepartmentValid(currentDepartment)) {
                                 currentMenu = 8;
                             } else {
                                 print.printError(2);
@@ -75,7 +75,7 @@ public class Menu {
                     case "9": // Сотрудники с ЗП меньше введеной
                         int rateLess;
                         print.printMessage("Введите искомую сумму: ");
-                        if ((rateLess = getInt()) != -1) {
+                        if ((rateLess = getInt()) > 0) {
                             print.printLessSalary(rateLess, employeeBook);
                             print.printMessage("%n");
                         } else {
@@ -85,7 +85,7 @@ public class Menu {
                     case "10": // Сотрудники с ЗП больше введеной
                         int rateMore;
                         print.printMessage("Введите искомую сумму: ");
-                        if ((rateMore = getInt()) != -1) {
+                        if ((rateMore = getInt()) > 0) {
                             print.printMoreSalary(rateMore, employeeBook);
                             print.printMessage("%n");
                         } else {
@@ -98,10 +98,10 @@ public class Menu {
                         print.printMessage("Прием сотрудника на работу.%nВведите ФИО: ");
                         String fullName = scannerAdd.nextLine();
                         print.printMessage("Введите зарплату: ");
-                        if ((salary = getInt()) != -1) {
+                        if ((salary = getInt()) > 0) {
                             print.printMessage("Введите отдел: ");
                             int department;
-                            if ((department = getInt()) != -1) {
+                            if ((department = getInt()) > 0) {
                                 if (employeeBook.addEmployee(fullName, department, salary)) {
                                     print.printMessage(String.format("Сотрудник %s принят на работу в отдел %d с зарплатой %d.%n", fullName, department, salary));
                                 } else {
@@ -125,7 +125,7 @@ public class Menu {
                         String salaryChangeFullName = scannerChangeSalary.nextLine();
                         print.printMessage("Введите новую зарплату: ");
                         int changedSalary;
-                        if ((changedSalary = getInt()) != -1) {
+                        if ((changedSalary = getInt()) > 0) {
                             if (employeeBook.changeSalary(salaryChangeFullName, changedSalary)) {
                                 print.printMessage(String.format("Зарплата сотрудника %s изменена на %d%n", salaryChangeFullName, changedSalary));
                             } else {
@@ -143,7 +143,7 @@ public class Menu {
                         String depChangeFullName = scannerChangeDepartment.nextLine();
                         print.printMessage("Введите отдел: ");
                         int changedDepartment;
-                        if ((changedDepartment = getInt()) != -1) {
+                        if ((changedDepartment = getInt()) > 0) {
                             if (employeeBook.changeDepartment(depChangeFullName, changedDepartment)) {
                                 print.printMessage(String.format("Отдел сотрудника %s изменен на %d.%n", depChangeFullName, changedDepartment));
                             } else {
@@ -187,7 +187,7 @@ public class Menu {
                     case "6": // Индексация зарплаты в отделе
                         print.printMessage("Введите, на сколько процентов повысить зарплату: ");
                         int percent;
-                        if ((percent = getInt()) != -1) {
+                        if ((percent = getInt()) > 0) {
                             if (employeeBook.raiseSalary(percent, currentDepartment)) {
                                 print.printMessage(String.format("Зарплата отдела %d увеличена на %d процентов.%n", currentDepartment, percent));
                             } else {
