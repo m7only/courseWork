@@ -1,4 +1,4 @@
-import java.util.LinkedList;
+import java.util.List;
 
 public class Print {
     public void printMainMenu() { // Вывод главного меню
@@ -69,7 +69,7 @@ public class Print {
     }
 
     public void printAllEmployee(EmployeeBook employeeBook, int currentDepartment) { // Вывод всех данных по сотрудникам в указанном отделе
-        LinkedList<Employee> list = employeeBook.listAll(currentDepartment);
+        List<Employee> list = employeeBook.listAll(currentDepartment);
         if (!list.isEmpty()) {
             for (Employee emp : employeeBook.listAll(currentDepartment)) {
                 if (emp != null) {
@@ -82,7 +82,7 @@ public class Print {
     }
 
     public void printAllEmployeeByDepartment(EmployeeBook employeeBook) { // Вывод сотрудников с распределением по отделам
-        for (int currentDepartment = 1; currentDepartment <= EmployeeBook.DEPARTMENT_QUANTITY; currentDepartment++) {
+        for (int currentDepartment = 1; currentDepartment <= employeeBook.getDepartmentQuantity(); currentDepartment++) {
             System.out.println("Состав сотрудников отдела " + currentDepartment + ":");
             printAllEmployee(employeeBook, currentDepartment);
         }
@@ -122,7 +122,7 @@ public class Print {
 
     public void printAllFullName(EmployeeBook employeeBook) { // Вывод ФЫО всех сотрудников
         System.out.println("Список всех сотрудников: ");
-        LinkedList<String> allFullName = employeeBook.getAllFullName();
+        List<String> allFullName = employeeBook.getAllFullName();
         if (!allFullName.isEmpty()) {
             allFullName.forEach(System.out::println);
         } else {
@@ -132,7 +132,7 @@ public class Print {
 
     public void printLessSalary(int rateLess, EmployeeBook employeeBook) { // Вывод данных сотрудников с зарплатой больше указанной
         System.out.printf("Сотрудники, зарплата которых меньше %d:%n", rateLess);
-        LinkedList<Employee> listLessSalary = employeeBook.listLessSalary(rateLess);
+        List<Employee> listLessSalary = employeeBook.listLessSalary(rateLess);
         if (!listLessSalary.isEmpty()) {
             listLessSalary.forEach((employee -> System.out.printf("id=%d, %s, зарплата: %d%n", employee.getId(), employee.getFullName(), employee.getSalary())));
         } else {
@@ -142,7 +142,7 @@ public class Print {
 
     public void printMoreSalary(int rateMore, EmployeeBook employeeBook) { // Вывод данных сотрудников с зарплатой больше указанной
         System.out.printf("Сотрудники, зарплата которых больше %d:%n", rateMore);
-        LinkedList<Employee> listMoreSalary = employeeBook.listMoreSalary(rateMore);
+        List<Employee> listMoreSalary = employeeBook.listMoreSalary(rateMore);
         if (!listMoreSalary.isEmpty()) {
             listMoreSalary.forEach((employee -> System.out.printf("id=%d, %s, зарплата: %d%n", employee.getId(), employee.getFullName(), employee.getSalary())));
         } else {

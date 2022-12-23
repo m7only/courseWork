@@ -1,44 +1,54 @@
 import java.util.LinkedList;
+import java.util.List;
 
 public class EmployeeBook {
-    private Employee[] employee = new Employee[10];
-    public static final int DEPARTMENT_QUANTITY = 5; // количество отделов согласно условий задачи
+    private final Employee[] employee = new Employee[10];
+    private static final int DEPARTMENT_QUANTITY = 5; // количество отделов согласно условий задачи
 
-    public boolean addEmployee(String fullName, int department, int salary) { // Добавляем сотрудника. Если добавился - ок, если нет места в массиве - ошибка
+    public boolean addEmployee(Employee employee) { // Добавляем сотрудника. Если добавился - ок, если нет места в массиве - ошибка
+        if (isDepartmentValid(employee.getDepartment())) { // проверка на правильно введенный отдел
+            for (int i = 0; i < this.employee.length; i++) {
+                if (this.employee[i] == null) { // проверка на пустую ячейку в масиве
+                    this.employee[i] = employee;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean removeEmployee(String input) { // Увольняем сотрудника по ФЫО, если удален - ок, если нет - не ок.
         for (int i = 0; i < employee.length; i++) {
-            if (employee[i] == null && isDepartmentValid(department)) { // проверка на пустую ячейку в масиве и правильно введенный отдел
-                employee[i] = new Employee(fullName, department, salary);
+            if (employee[i] != null && employee[i].getFullName().equals(input)) {
+                employee[i] = null;
                 return true;
             }
         }
         return false;
     }
 
-    public boolean removeEmployee(String input) { // Увольняем сотрудника по ФЫО или id, если удален - ок, если нет - не ок.
-        if (isInteger(input)) { // проверяем, что ввели в строку: ФЫО или номер отдела
-            for (int i = 0; i < employee.length; i++) {
-                if (employee[i] != null && employee[i].getId() == Integer.parseInt(input)) {
-                    employee[i] = null;
-                    return true;
-                }
-            }
-        } else {
-            for (int i = 0; i < employee.length; i++) {
-                if (employee[i] != null && employee[i].getFullName().equals(input)) {
-                    employee[i] = null;
-                    return true;
-                }
+    public boolean removeEmployee(int id) { // Увольняем сотрудника по id, если удален - ок, если нет - не ок.
+        for (int i = 0; i < employee.length; i++) {
+            if (employee[i] != null && employee[i].getId() == id) {
+                employee[i] = null;
+                return true;
             }
         }
         return false;
     }
 
-    public Employee[] listAll() { // Вернуть все данные по сотрудникам для вывода в консоль .toString
-        return this.employee;
+    public List<Employee> listAll() { // Вернуть все данные по сотрудникам для вывода в консоль .toString
+        List<Employee> list = new LinkedList<>();
+        for (Employee emp : employee) {
+            if(emp!=null){
+                list.add(emp);
+            }
+        }
+        return list;
     }
 
-    public LinkedList<Employee> listAll(int currentDepartment) { // Возвращаем данные сотрудников выбранного отдела
-        LinkedList<Employee> list = new LinkedList<>();
+    public List<Employee> listAll(int currentDepartment) { // Возвращаем данные сотрудников выбранного отдела
+        List<Employee> list = new LinkedList<>();
         for (Employee emp : employee) {
             if (emp != null) {
                 if (emp.getDepartment() == currentDepartment) {
@@ -70,10 +80,10 @@ public class EmployeeBook {
     }
 
     public Employee getMinSalaryEmployee() { // Ищем неудачника с минимальной зарплатой
-        Employee minSalaryEmployee = new Employee();
+        Employee minSalaryEmployee=null;
         for (int department = 1; department <= DEPARTMENT_QUANTITY; department++) {
             Employee minSalaryByDepartment = getMinSalaryEmployee(department);
-            if (minSalaryEmployee.getFullName() == null || minSalaryEmployee.getSalary() > minSalaryByDepartment.getSalary()) {
+            if (minSalaryEmployee == null || minSalaryEmployee.getSalary() > minSalaryByDepartment.getSalary()) {
                 minSalaryEmployee = minSalaryByDepartment;
             }
         }
@@ -81,13 +91,10 @@ public class EmployeeBook {
     }
 
     public Employee getMinSalaryEmployee(int currentDepartment) { // Ищем неудачника в отделе с минимальной зарплатой
-        Employee minSalaryEmployee = new Employee();
+        Employee minSalaryEmployee = null;
         for (Employee emp : employee) {
             if (emp != null && emp.getDepartment() == currentDepartment) {
-                if (minSalaryEmployee.getFullName() == null) { // для присвоения начальной зарплаты
-                    minSalaryEmployee = emp;
-                }
-                if (minSalaryEmployee.getSalary() > emp.getSalary()) {
+                if (minSalaryEmployee.getFullName() == null || minSalaryEmployee.getSalary() > emp.getSalary()) { // для присвоения начальной зарплаты
                     minSalaryEmployee = emp;
                 }
             }
@@ -96,10 +103,10 @@ public class EmployeeBook {
     }
 
     public Employee getMaxSalaryEmployee() { // Ищем выскочку с максимальной зарплатой
-        Employee maxSalaryEmployee = new Employee();
+        Employee maxSalaryEmployee = null;
         for (int department = 1; department <= DEPARTMENT_QUANTITY; department++) {
             Employee maxSalaryByDepartment = getMaxSalaryEmployee(department);
-            if (maxSalaryEmployee.getFullName() == null || maxSalaryEmployee.getSalary() < maxSalaryByDepartment.getSalary()) {
+            if (maxSalaryEmployee == null || maxSalaryEmployee.getSalary() < maxSalaryByDepartment.getSalary()) {
                 maxSalaryEmployee = maxSalaryByDepartment;
             }
         }
@@ -107,14 +114,12 @@ public class EmployeeBook {
     }
 
     public Employee getMaxSalaryEmployee(int currentDepartment) { // Ищем выскочку в отделе с максимальной зарплатой
-        Employee maxSalaryEmployee = new Employee();
+        Employee maxSalaryEmployee=null;
         for (Employee emp : employee) {
             if (emp != null && emp.getDepartment() == currentDepartment) {
-                if (maxSalaryEmployee.getFullName() == null) { // Для присвоения начальной зарплаты, с которой будем сравнивать
+                if (maxSalaryEmployee == null || maxSalaryEmployee.getSalary() < emp.getSalary()) { // Для присвоения начальной зарплаты, с которой будем сравнивать
                     maxSalaryEmployee = emp;
                 }
-                if (maxSalaryEmployee.getSalary() < emp.getSalary())
-                    maxSalaryEmployee = emp;
             }
         }
         return maxSalaryEmployee;
@@ -152,24 +157,22 @@ public class EmployeeBook {
         return list;
     }
 
-    public boolean raiseSalary(int percent) { // Индексируем зарплату всем сотрудникам на введеный процент
+    public void raiseSalary(int percent) { // Индексируем зарплату всем сотрудникам на введеный процент
         double k = (double) percent / 100 + 1;
         for (Employee value : employee) {
             if (value != null) {
                 value.setSalary((int) (value.getSalary() * k));
             }
         }
-        return true;
     }
 
-    public boolean raiseSalary(int percent, int currentDepartment) { // Индексируем зарплату отделу на введеный процент
+    public void raiseSalary(int percent, int currentDepartment) { // Индексируем зарплату отделу на введеный процент
         double k = (double) percent / 100 + 1;
         for (Employee value : employee) {
             if (value != null && value.getDepartment() == currentDepartment) {
                 value.setSalary((int) (value.getSalary() * k));
             }
         }
-        return true;
     }
 
     public LinkedList<Employee> listLessSalary(int lessSalary) { // Возвращаем список сотрудников, зарплата которых меньше указанной
@@ -215,22 +218,14 @@ public class EmployeeBook {
         return false;
     }
 
+    public int getDepartmentQuantity() {
+        return DEPARTMENT_QUANTITY;
+    }
+
     public static boolean isDepartmentValid(int d) {
         if (d > 0 && d <= DEPARTMENT_QUANTITY) {
             return true;
         }
         return false;
     }
-
-    public static boolean isInteger(String string) { // Проверка введеной строки на целочисленное значение
-        try {
-            Integer.parseInt(string);
-        } catch (NumberFormatException e) {
-            return false;
-        } catch (NullPointerException e) {
-            return false;
-        }
-        return true;
-    }
-
 }

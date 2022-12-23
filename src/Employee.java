@@ -1,5 +1,5 @@
 public class Employee {
-    public static int idCounter = 0;
+    private static int idCounter = 0;
     private int id;
     private String fullName;
     private int department;
@@ -12,23 +12,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Employee() {
-    }
-
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getFullName() {
         return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public int getDepartment() {

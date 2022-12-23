@@ -51,11 +51,9 @@ public class Menu {
                         print.printMessage("Введите, на сколько процентов повысить зарплату: ");
                         int percent;
                         if ((percent = getInt()) > 0) {
-                            if (employeeBook.raiseSalary(percent)) {
-                                print.printMessage(String.format("Зарплата увеличена на %d процентов.%n", percent));
-                            } else {
-                                print.printError(1);
-                            }
+                            employeeBook.raiseSalary(percent);
+                            print.printMessage(String.format("Зарплата увеличена на %d процентов.%n", percent));
+
                         } else {
                             print.printError(1);
                         }
@@ -102,7 +100,8 @@ public class Menu {
                             print.printMessage("Введите отдел: ");
                             int department;
                             if ((department = getInt()) > 0) {
-                                if (employeeBook.addEmployee(fullName, department, salary)) {
+                                Employee employee = new Employee(fullName, department, salary);
+                                if (employeeBook.addEmployee(employee)) {
                                     print.printMessage(String.format("Сотрудник %s принят на работу в отдел %d с зарплатой %d.%n", fullName, department, salary));
                                 } else {
                                     print.printError(3);
@@ -137,7 +136,7 @@ public class Menu {
                         break;
                     case "14": // Изменить отдел сотрдника
                         print.printMessage("Список сотрудников организации:");
-                        employeeBook.listAll();
+                        print.printAllEmployee(employeeBook);
                         print.printMessage("Введие ФИО сотрудника, которому нужно измеить отдел: ");
                         Scanner scannerChangeDepartment = new Scanner(System.in);
                         String depChangeFullName = scannerChangeDepartment.nextLine();
@@ -188,11 +187,9 @@ public class Menu {
                         print.printMessage("Введите, на сколько процентов повысить зарплату: ");
                         int percent;
                         if ((percent = getInt()) > 0) {
-                            if (employeeBook.raiseSalary(percent, currentDepartment)) {
-                                print.printMessage(String.format("Зарплата отдела %d увеличена на %d процентов.%n", currentDepartment, percent));
-                            } else {
-                                print.printError(1);
-                            }
+                            employeeBook.raiseSalary(percent, currentDepartment);
+                            print.printMessage(String.format("Зарплата отдела %d увеличена на %d процентов.%n", currentDepartment, percent));
+
                         } else {
                             print.printError(1);
                         }
@@ -208,13 +205,25 @@ public class Menu {
                 Scanner scannerRemove = new Scanner(System.in);
                 String input = scannerRemove.nextLine();
                 if (!input.equals("exit")) {
-                    if (employeeBook.removeEmployee(input)) {
-                        print.printMessage(String.format("Сотрудник %s уволен.%n%n", input));
+                    if (isInteger(input)) {
+                        if (employeeBook.removeEmployee(Integer.parseInt(input))) {
+                            print.printMessage(String.format("Сотрудник %s уволен.%n%n", input));
+                        } else {
+                            print.printError(4);
+                        }
                     } else {
-                        print.printError(4);
+                        if (employeeBook.removeEmployee(input)) {
+                            print.printMessage(String.format("Сотрудник %s уволен.%n%n", input));
+                        } else {
+                            print.printError(4);
+                        }
                     }
-                } else currentMenu = 0;
-            } else currentMenu = 0;
+                } else {
+                    currentMenu = 0;
+                }
+            } else {
+                currentMenu = 0;
+            }
         }
     }
 
@@ -223,7 +232,7 @@ public class Menu {
         boolean inputCheck = true;
         while (inputCheck) {
             String input = scanner.nextLine();
-            if (EmployeeBook.isInteger(input)) {
+            if (isInteger(input)) {
                 inputCheck = false;
                 return Integer.parseInt(input);
             } else {
@@ -232,5 +241,16 @@ public class Menu {
             }
         }
         return -1;
+    }
+
+    private boolean isInteger(String string) { // Проверка введеной строки на целочисленное значение
+        try {
+            Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            return false;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
     }
 }
